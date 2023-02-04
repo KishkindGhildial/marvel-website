@@ -1,42 +1,50 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+  --red: #ec1d24;
+  --white: #fff;
+  --black: #000;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  display: flex;
+  justify-content: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.header {
+  background-color: var(--red);
+  width: 100vw;
+  display: flex;
+  justify-content: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.width-wrapper {
+  max-width: 1440px;
+  width: 80vw;
 }
 
-.card {
-  padding: 2em;
+.header-content {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.read-the-docs {
-  color: #888;
+.comic-search {
+  background-color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 22px;
+  color: var(--black);
+  padding: 8px 10px 8px 25px;
+  outline: none;
+}
+
+.header-search-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 5px;
+  top: 12px;
 }
