@@ -48,3 +48,30 @@ body {
   left: 5px;
   top: 12px;
 }
+
+.carousel {
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-width-wrapper {
+  width: 800px;
+}
+
+.carousel-content {
+  display: flex;
+  overflow: hidden;
+  border: 2px solid red;
+}
+
+.carousel-item {
+  padding: 5px 20px;
+}
+
+.carousel-img {
+  border-radius: 50%;
+}
+
+.carousel-ctrl {
+  cursor: pointer;
+}
