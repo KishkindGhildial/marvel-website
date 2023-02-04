@@ -53,6 +53,14 @@ body {
   top: 12px;
 }
 
+.loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
 .carousel {
   display: flex;
   justify-content: center;
@@ -60,7 +68,7 @@ body {
 }
 
 .carousel-width-wrapper {
-  width: 800px;
+  width: 820px;
 }
 
 .carousel-content {
@@ -74,6 +82,10 @@ body {
   cursor: pointer;
 }
 
+.carousel-item .carousel-img {
+  border: 2px solid var(--black);
+}
+
 .carousel-item .selection-wrap,
 .carousel-item .selection-check {
   display: none;
@@ -84,8 +96,8 @@ body {
   position: absolute;
   top: 5px;
   left: 20px;
-  width: 120px;
-  height: 120px;
+  width: 124px;
+  height: 124px;
   border-radius: 50%;
   background-color: var(--selected-backdrop);
 }
@@ -95,10 +107,14 @@ body {
   position: absolute;
   bottom: 0;
   right: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--black);
 }
 
 .carousel-img {
   border-radius: 50%;
+  width: 120px;
+  height: 120px;
 }
 
 .carousel-ctrl {
@@ -125,5 +141,6 @@ body {
   display: flex;
   justify-content: center;
   padding: 20px 0 30px;
-  background-color: var(--background);
+  border-top: 5px solid var(--red);
+  background-color: var(--white);
 }

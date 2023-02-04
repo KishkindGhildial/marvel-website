@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './App.css';
 
 import Header from './components/Header';
 import Carousel from './components/Carousel';
 import Comics from './components/Comics';
 
-import charSeed from './seeds/characters';
-
 function App() {
+  const queryClient = new QueryClient();
+
   const [selectedItems, setSelectedItems] = useState({
     ids: [],
     names: [],
@@ -33,12 +34,13 @@ function App() {
   return (
     <>
       <Header />
-      <Carousel
-        data={charSeed.data.results}
-        selectedItems={selectedItems}
-        handleItemClick={handleCharClick}
-      />
-      <Comics />
+      <QueryClientProvider client={queryClient}>
+        <Carousel
+          selectedItems={selectedItems}
+          handleItemClick={handleCharClick}
+        />
+        <Comics />
+      </QueryClientProvider>
     </>
   );
 }

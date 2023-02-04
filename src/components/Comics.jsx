@@ -19,6 +19,7 @@ const Comics = () => {
     <>
       <div className="width-wrapper">
         <div className="comic-books-table">
+          {/* <div className="comic-book"></div>
           <div className="comic-book"></div>
           <div className="comic-book"></div>
           <div className="comic-book"></div>
@@ -28,8 +29,7 @@ const Comics = () => {
           <div className="comic-book"></div>
           <div className="comic-book"></div>
           <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
+          <div className="comic-book"></div> */}
         </div>
       </div>
       <div className="pagination-ctrls">
