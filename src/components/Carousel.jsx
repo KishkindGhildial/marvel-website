@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
-import charSeed from '../seeds/characters';
 import prev from '../assets/prev.svg';
 import next from '../assets/next.svg';
+import check from '../assets/check.svg';
 
-const Carousel = () => {
+const Carousel = ({ data, selectedItems, handleItemClick }) => {
   const carouselSliderRef = useRef(null);
 
   const handleCtrlClick = ctrlType => {
@@ -34,11 +34,25 @@ const Carousel = () => {
       />
       <div className="carousel-width-wrapper">
         <div ref={carouselSliderRef} className="carousel-content">
-          {charSeed.data.results.map(char => {
+          {data.map(char => {
             const { path, extension: ext } = char.thumbnail;
             const imgSrc = `${path}.${ext}`;
             return (
-              <div className="carousel-item">
+              <div
+                className={
+                  selectedItems.ids.indexOf(char.id) !== -1
+                    ? 'carousel-item selected'
+                    : 'carousel-item'
+                }
+                onClick={() => handleItemClick(char.id, char.name)}
+              >
+                <span className="selection-wrap" />
+                <img
+                  className="selection-check"
+                  src={check}
+                  alt="Check Icon"
+                  width={50}
+                />
                 <img
                   className="carousel-img"
                   src={imgSrc}

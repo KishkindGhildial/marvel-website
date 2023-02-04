@@ -2,6 +2,7 @@
   --red: #ec1d24;
   --white: #fff;
   --black: #000;
+  --selected-backdrop: rgba(236, 29, 36, 0.5);
 }
 
 body {
@@ -68,6 +69,31 @@ body {
 
 .carousel-item {
   padding: 5px 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.carousel-item .selection-wrap,
+.carousel-item .selection-check {
+  display: none;
+}
+
+.carousel-item.selected .selection-wrap {
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: var(--selected-backdrop);
+}
+
+.carousel-item.selected .selection-check {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  right: 30px;
 }
 
 .carousel-img {
