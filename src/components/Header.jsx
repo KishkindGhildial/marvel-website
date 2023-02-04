@@ -23,6 +23,7 @@ const Header = () => {
             className="comic-search"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
+            placeholder="Search for comics..."
           />
         </div>
       </div>

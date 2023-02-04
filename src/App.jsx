@@ -3,14 +3,14 @@ import './App.css';
 
 import Header from './components/Header';
 import Carousel from './components/Carousel';
+import Comics from './components/Comics';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <Header />
       <Carousel />
+      <Comics />
       <h1>Marvel</h1>
     </>
   );

@@ -19,6 +19,7 @@ body {
 .width-wrapper {
   max-width: 1440px;
   width: 80vw;
+  margin: 0 auto;
 }
 
 .header-content {
@@ -32,11 +33,12 @@ body {
   background-color: var(--white);
   border: none;
   border-radius: 6px;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 22px;
   color: var(--black);
   padding: 8px 10px 8px 25px;
   outline: none;
+  min-width: 250px;
 }
 
 .header-search-wrapper {
@@ -52,6 +54,7 @@ body {
 .carousel {
   display: flex;
   justify-content: center;
+  padding: 30px 0;
 }
 
 .carousel-width-wrapper {
@@ -61,7 +64,6 @@ body {
 .carousel-content {
   display: flex;
   overflow: hidden;
-  border: 2px solid red;
 }
 
 .carousel-item {
@@ -74,4 +76,16 @@ body {
 
 .carousel-ctrl {
   cursor: pointer;
+}
+
+.comic-books-table {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.comic-book {
+  margin: 10px 10px;
+  width: 150px;
+  height: 200px;
+  background-color: tomato;
 }
