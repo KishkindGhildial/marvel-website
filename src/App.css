@@ -157,3 +157,45 @@ body {
   border-top: 5px solid var(--red);
   background-color: var(--white);
 }
+
+.pagination {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.pageNum {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--grey);
+  margin: 0 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.pageNum.selected {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.page-enddots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-endpoint-ctrl {
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.comics-loader {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

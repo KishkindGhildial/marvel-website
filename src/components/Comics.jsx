@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import prev from '../assets/prev.svg';
 import next from '../assets/next.svg';
+import loader from '../assets/loader.gif';
 
 import { getMarvelData } from '../utils';
 
@@ -13,17 +14,87 @@ const Comics = () => {
     ctrlEndReached: false,
   });
 
-  const RenderPageSet = () => {
-    let pageCounter;
-    // const lastPage =
-    return null;
+  useEffect(() => {
+    console.log('Current Page changed: ', paginationState.currentPage);
+    refetch();
+  }, [paginationState.currentPage]);
+
+  const setNewPage = page => {
+    setPaginationState(prev => ({ ...prev, currentPage: page }));
   };
 
-  const { isLoading, error, data } = useQuery({
+  const RenderPageSet = data => {
+    if (!data) return null;
+    let isStateChanged = false;
+
+    let currentPageCount;
+    const renderPageSet = [];
+    let totalPages = data.total / data.count;
+    if (Math.floor(totalPages) !== totalPages)
+      totalPages = Math.floor(totalPages) + 1;
+
+    const newState = { ...paginationState };
+
+    // 3 pages visible at a time
+    currentPageCount = paginationState.visiblePageset * 3;
+
+    if (totalPages <= currentPageCount) {
+      currentPageCount = totalPages;
+      newState.ctrlEndReached = true;
+      isStateChanged = true;
+    }
+
+    for (let i = currentPageCount - 2; i <= currentPageCount; i++) {
+      renderPageSet.push(i);
+    }
+
+    if (isStateChanged) setPaginationState(newState);
+
+    return (
+      <ul className="pagination">
+        {renderPageSet.map((num, index) => (
+          <li
+            keu={index + 1}
+            className={
+              paginationState.currentPage === num
+                ? 'pageNum selected'
+                : 'pageNum'
+            }
+            onClick={() => setNewPage(num)}
+          >
+            {num}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  const handleEndCtrlClick = ctrlType => {
+    const newState = { ...paginationState };
+
+    if (ctrlType === 'prv') {
+      newState.visiblePageset -= 1;
+    } else {
+      newState.visiblePageset += 1;
+    }
+
+    newState.currentPage = newState.visiblePageset * 3 - 2;
+
+    let totalPages = data.total / data.count;
+    if (Math.floor(totalPages) !== totalPages)
+      totalPages = Math.floor(totalPages) + 1;
+
+    setPaginationState(newState);
+  };
+
+  const { isLoading, error, data, refetch, fetchStatus } = useQuery({
     queryKey: ['comics'],
+    enabled: false,
     queryFn: async () => {
       const response = await getMarvelData(
-        'https://gateway.marvel.com:443/v1/public/comics?orderBy=title&apikey=1810d2d7ef7043b15612ca579e577e7e'
+        `https://gateway.marvel.com:443/v1/public/comics?apikey=1810d2d7ef7043b15612ca579e577e7e&offset=${
+          paginationState.currentPage * 20
+        }`
       );
 
       if (response.status === 'Ok' && response.code === 200) {
@@ -34,39 +105,43 @@ const Comics = () => {
     },
   });
 
+  console.log(fetchStatus);
   return (
     <>
       <div className="width-wrapper">
         <div className="comic-books-table">
-          {!isLoading
-            ? data.results.map((comic, index) => {
-                const { path, extension } = comic.thumbnail;
-                const imgURL = `${path}.${extension}`;
-                return (
-                  <div className="comic-book">
-                    <img src={imgURL} alt="Comic Thumbnail" width={200} />
-                  </div>
-                );
-              })
-            : null}
-          {/* <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div>
-          <div className="comic-book"></div> */}
+          {!isLoading && fetchStatus !== 'fetching' ? (
+            data.results.map((comic, index) => {
+              const { path, extension } = comic.thumbnail;
+              const imgURL = `${path}.${extension}`;
+              return (
+                <div key={index + 1} className="comic-book">
+                  <img src={imgURL} alt="Comic Thumbnail" width={200} />
+                </div>
+              );
+            })
+          ) : (
+            <div className="comics-loader">
+              <img src={loader} alt="Loader" width={400} />
+            </div>
+          )}
         </div>
       </div>
       <div className="pagination-ctrls">
-        <img src={prev} alt="Prev" />
-        {RenderPageSet()}
+        <img
+          src={prev}
+          alt="Prev"
+          className="pagination-endpoint-ctrl"
+          onClick={() => handleEndCtrlClick('prv')}
+        />
+        {RenderPageSet(data)}
         <span className="page-enddots">...</span>
-        <img src={next} alt="Next" />
+        <img
+          src={next}
+          alt="Next"
+          className="pagination-endpoint-ctrl"
+          onClick={() => handleEndCtrlClick('nxt')}
+        />
       </div>
     </>
   );
