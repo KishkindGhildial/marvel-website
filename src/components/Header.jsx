@@ -10,7 +10,14 @@ const Header = ({ setGlobalSearchTerm, setCurrentAction }) => {
   return (
     <div className="header">
       <div className="width-wrapper header-content">
-        <img src={logo} alt="Logo" width={130} height={52} />
+        <img
+          src={logo}
+          alt="Logo"
+          width={130}
+          height={52}
+          className="site-logo"
+          onClick={() => window.location.reload()}
+        />
         <div className="header-search-wrapper">
           <img
             src={searchIcon}

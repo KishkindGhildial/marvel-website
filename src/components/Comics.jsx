@@ -125,7 +125,6 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
     queryFn: async () => {
       let url = null;
 
-      debugger;
       if (selectedItems.ids.length > 0) {
         let charIds = '';
         selectedItems.ids.forEach(id => {

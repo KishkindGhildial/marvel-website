@@ -38,6 +38,10 @@ body {
   align-items: center;
 }
 
+.site-logo {
+  cursor: pointer;
+}
+
 .comic-search {
   background-color: var(--white);
   border: none;
@@ -94,6 +98,13 @@ body {
   top: 72px;
   width: 100vw;
   background-color: var(--white);
+}
+
+.reset-btn {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  cursor: pointer;
 }
 
 .carousel-width-wrapper {

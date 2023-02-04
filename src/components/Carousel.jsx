@@ -99,6 +99,12 @@ const Carousel = ({ selectedItems, handleItemClick }) => {
             width={30}
             onClick={() => handleCtrlClick('nxt')}
           />
+          <button
+            className="reset-btn"
+            onClick={() => window.location.reload()}
+          >
+            Reset all filters
+          </button>
         </div>
       ) : (
         <div className="loader">
