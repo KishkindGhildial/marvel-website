@@ -13,6 +13,7 @@ function App() {
     ids: [],
     names: [],
   });
+  const [globalSearchTerm, setGlobalSearchTerm] = useState('');
 
   const handleCharClick = (id, name) => {
     setSelectedItems(prev => {
@@ -33,13 +34,13 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header setGlobalSearchTerm={setGlobalSearchTerm} />
       <QueryClientProvider client={queryClient}>
         <Carousel
           selectedItems={selectedItems}
           handleItemClick={handleCharClick}
         />
-        <Comics />
+        <Comics searchTerm={globalSearchTerm} />
       </QueryClientProvider>
     </>
   );

@@ -1,9 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import _ from 'lodash';
+
 import logo from '../assets/logo.svg';
 import searchIcon from '../assets/search.svg';
 
-const Header = () => {
+const Header = ({ setGlobalSearchTerm }) => {
   const [searchTerm, setSearchTerm] = useState('');
+
+  // useEffect(
+  //   _.debounce(
+  //     () => {
+  //       setGlobalSearchTerm(searchTerm);
+  //     },
+  //     1000,
+  //     {
+  //       leading: false,
+  //       trailing: true,
+  //     }
+  //   ),
+  //   [searchTerm]
+  // );
 
   return (
     <div className="header">
@@ -25,6 +41,12 @@ const Header = () => {
             onChange={e => setSearchTerm(e.target.value)}
             placeholder="Search for comics..."
           />
+          <button
+            className="searchButton"
+            onClick={() => setGlobalSearchTerm(searchTerm)}
+          >
+            Search
+          </button>
         </div>
       </div>
     </div>

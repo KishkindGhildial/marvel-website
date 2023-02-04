@@ -60,6 +60,22 @@ body {
   top: 12px;
 }
 
+.searchButton {
+  border: 2px solid var(--white);
+  border-radius: 6px;
+  padding: 7px 25px;
+  margin: 0 10px;
+  background-color: var(--red);
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  font-weight: 700;
+}
+
+.searchButton:hover {
+  background-color: var(--white);
+  color: var(--black);
+}
+
 .loader {
   display: flex;
   flex-direction: column;

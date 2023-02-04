@@ -7,17 +7,29 @@ import loader from '../assets/loader.gif';
 
 import { getMarvelData } from '../utils';
 
-const Comics = () => {
+const Comics = ({ searchTerm }) => {
   const [paginationState, setPaginationState] = useState({
     visiblePageset: 1,
     currentPage: 1,
     ctrlEndReached: false,
   });
 
+  const [globalSearchTerm, setGlobalSearchTerm] = useState('');
+
   useEffect(() => {
     console.log('Current Page changed: ', paginationState.currentPage);
     refetch();
   }, [paginationState.currentPage]);
+
+  useEffect(() => {
+    if (searchTerm !== '') {
+      setGlobalSearchTerm(searchTerm);
+    }
+  }, [searchTerm]);
+
+  useEffect(() => {
+    refetch();
+  }, [globalSearchTerm]);
 
   const setNewPage = page => {
     setPaginationState(prev => ({ ...prev, currentPage: page }));
@@ -91,11 +103,19 @@ const Comics = () => {
     queryKey: ['comics'],
     enabled: false,
     queryFn: async () => {
-      const response = await getMarvelData(
-        `https://gateway.marvel.com:443/v1/public/comics?apikey=1810d2d7ef7043b15612ca579e577e7e&offset=${
-          paginationState.currentPage * 20
-        }`
-      );
+      let url;
+
+      if (searchTerm !== '')
+        url = `https://gateway.marvel.com:443/v1/public/comics?title=${encodeURIComponent(
+          searchTerm
+        )}&orderBy=title&apikey=1810d2d7ef7043b15612ca579e577e7e
+      `;
+      else
+        url = `https://gateway.marvel.com:443/v1/public/comics?apikey=1810d2d7ef7043b15612ca579e577e7e&offset=${
+          (paginationState.currentPage - 1) * 20
+        }`;
+
+      const response = await getMarvelData(url);
 
       if (response.status === 'Ok' && response.code === 200) {
         return response.data;
@@ -105,7 +125,6 @@ const Comics = () => {
     },
   });
 
-  console.log(fetchStatus);
   return (
     <>
       <div className="width-wrapper">
