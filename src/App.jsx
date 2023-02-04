@@ -39,7 +39,6 @@ function App() {
         handleItemClick={handleCharClick}
       />
       <Comics />
-      <h1>Marvel</h1>
     </>
   );
 }

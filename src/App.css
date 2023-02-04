@@ -3,6 +3,7 @@
   --white: #fff;
   --black: #000;
   --selected-backdrop: rgba(236, 29, 36, 0.5);
+  --background: #1c1c1c;
 }
 
 body {
@@ -107,6 +108,7 @@ body {
 .comic-books-table {
   display: flex;
   flex-wrap: wrap;
+  padding-bottom: 80px;
 }
 
 .comic-book {
@@ -114,4 +116,14 @@ body {
   width: 150px;
   height: 200px;
   background-color: tomato;
+}
+
+.pagination-ctrls {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 30px;
+  background-color: var(--background);
 }
