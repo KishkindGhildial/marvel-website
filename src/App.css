@@ -154,6 +154,9 @@ body {
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 80px;
+}
+
+.content-heading {
   margin-top: 200px;
 }
 

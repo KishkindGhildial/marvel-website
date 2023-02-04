@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import prev from '../assets/prev.svg';
@@ -7,29 +7,12 @@ import loader from '../assets/loader.gif';
 
 import { getMarvelData } from '../utils';
 
-const Comics = ({ searchTerm }) => {
+const Comics = ({ currentAction, searchTerm, selectedItems }) => {
   const [paginationState, setPaginationState] = useState({
     visiblePageset: 1,
     currentPage: 1,
     ctrlEndReached: false,
   });
-
-  const [globalSearchTerm, setGlobalSearchTerm] = useState('');
-
-  useEffect(() => {
-    console.log('Current Page changed: ', paginationState.currentPage);
-    refetch();
-  }, [paginationState.currentPage]);
-
-  useEffect(() => {
-    if (searchTerm !== '') {
-      setGlobalSearchTerm(searchTerm);
-    }
-  }, [searchTerm]);
-
-  useEffect(() => {
-    refetch();
-  }, [globalSearchTerm]);
 
   const setNewPage = page => {
     setPaginationState(prev => ({ ...prev, currentPage: page }));
@@ -99,21 +82,26 @@ const Comics = ({ searchTerm }) => {
     setPaginationState(newState);
   };
 
-  const { isLoading, error, data, refetch, fetchStatus } = useQuery({
-    queryKey: ['comics'],
-    enabled: false,
+  const { isLoading, error, data, fetchStatus } = useQuery({
+    queryKey: ['comics', paginationState.currentPage, searchTerm],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
     queryFn: async () => {
-      let url;
+      let url = null;
 
-      if (searchTerm !== '')
+      if (searchTerm !== '') {
         url = `https://gateway.marvel.com:443/v1/public/comics?title=${encodeURIComponent(
           searchTerm
-        )}&orderBy=title&apikey=1810d2d7ef7043b15612ca579e577e7e
-      `;
-      else
+        )}&orderBy=title&apikey=1810d2d7ef7043b15612ca579e577e7e&offset=${
+          (paginationState.currentPage - 1) * 20
+        }`;
+      }
+
+      if (!url) {
         url = `https://gateway.marvel.com:443/v1/public/comics?apikey=1810d2d7ef7043b15612ca579e577e7e&offset=${
           (paginationState.currentPage - 1) * 20
         }`;
+      }
 
       const response = await getMarvelData(url);
 
@@ -125,9 +113,102 @@ const Comics = ({ searchTerm }) => {
     },
   });
 
+  const {
+    isLoading: isLoading1,
+    error: error1,
+    data: data1,
+    fetchStatus: fetchStatus1,
+  } = useQuery({
+    queryKey: ['comics', selectedItems],
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+    queryFn: async () => {
+      let url = null;
+
+      debugger;
+      if (selectedItems.ids.length > 0) {
+        let charIds = '';
+        selectedItems.ids.forEach(id => {
+          if (charIds === '') charIds += `${id}`;
+          else charIds += `, ${id}`;
+        });
+
+        url = `https://gateway.marvel.com:443/v1/public/comics?characters=${encodeURIComponent(
+          charIds
+        )}&orderBy=title&apikey=1810d2d7ef7043b15612ca579e577e7e&offset=${
+          (paginationState.currentPage - 1) * 20
+        }`;
+      } else {
+        url = `https://gateway.marvel.com:443/v1/public/comics?apikey=1810d2d7ef7043b15612ca579e577e7e&offset=${
+          (paginationState.currentPage - 1) * 20
+        }`;
+      }
+
+      const response = await getMarvelData(url);
+
+      if (response.status === 'Ok' && response.code === 200) {
+        return response.data;
+      } else {
+        throw new Error('Something went wrong!');
+      }
+    },
+  });
+
+  if (currentAction === 'select' && selectedItems.ids.length > 0)
+    return (
+      <>
+        <div className="width-wrapper">
+          <h2 className="content-heading">
+            Showing results for:{' '}
+            {selectedItems.names.map((name, index) =>
+              index === 0 ? <span>{name}</span> : <span>, {name}</span>
+            )}
+          </h2>
+          <div className="comic-books-table">
+            {!isLoading1 && fetchStatus1 !== 'fetching' ? (
+              data1.results.map((comic, index) => {
+                const { path, extension } = comic.thumbnail;
+                const imgURL = `${path}.${extension}`;
+                return (
+                  <div key={index + 1} className="comic-book">
+                    <img src={imgURL} alt="Comic Thumbnail" width={200} />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="comics-loader">
+                <img src={loader} alt="Loader" width={400} />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="pagination-ctrls">
+          <img
+            src={prev}
+            alt="Prev"
+            className="pagination-endpoint-ctrl"
+            onClick={() => handleEndCtrlClick('prv')}
+          />
+          {RenderPageSet(data)}
+          <span className="page-enddots">...</span>
+          <img
+            src={next}
+            alt="Next"
+            className="pagination-endpoint-ctrl"
+            onClick={() => handleEndCtrlClick('nxt')}
+          />
+        </div>
+      </>
+    );
+
   return (
     <>
       <div className="width-wrapper">
+        {currentAction === 'search' ? (
+          <h2 className="content-heading">Showing results for: {searchTerm}</h2>
+        ) : (
+          <h2 className="content-heading">Showing all comics</h2>
+        )}
         <div className="comic-books-table">
           {!isLoading && fetchStatus !== 'fetching' ? (
             data.results.map((comic, index) => {

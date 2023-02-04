@@ -4,22 +4,8 @@ import _ from 'lodash';
 import logo from '../assets/logo.svg';
 import searchIcon from '../assets/search.svg';
 
-const Header = ({ setGlobalSearchTerm }) => {
+const Header = ({ setGlobalSearchTerm, setCurrentAction }) => {
   const [searchTerm, setSearchTerm] = useState('');
-
-  // useEffect(
-  //   _.debounce(
-  //     () => {
-  //       setGlobalSearchTerm(searchTerm);
-  //     },
-  //     1000,
-  //     {
-  //       leading: false,
-  //       trailing: true,
-  //     }
-  //   ),
-  //   [searchTerm]
-  // );
 
   return (
     <div className="header">
@@ -43,7 +29,10 @@ const Header = ({ setGlobalSearchTerm }) => {
           />
           <button
             className="searchButton"
-            onClick={() => setGlobalSearchTerm(searchTerm)}
+            onClick={() => {
+              setGlobalSearchTerm(searchTerm);
+              setCurrentAction('search');
+            }}
           >
             Search
           </button>

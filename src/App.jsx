@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './App.css';
 
@@ -14,6 +14,11 @@ function App() {
     names: [],
   });
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
+  const [currentAction, setCurrentAction] = useState(null);
+
+  useEffect(() => {
+    if (selectedItems.ids.length > 0) setCurrentAction('select');
+  }, [selectedItems]);
 
   const handleCharClick = (id, name) => {
     setSelectedItems(prev => {
@@ -34,13 +39,20 @@ function App() {
 
   return (
     <>
-      <Header setGlobalSearchTerm={setGlobalSearchTerm} />
+      <Header
+        setGlobalSearchTerm={setGlobalSearchTerm}
+        setCurrentAction={setCurrentAction}
+      />
       <QueryClientProvider client={queryClient}>
         <Carousel
           selectedItems={selectedItems}
           handleItemClick={handleCharClick}
         />
-        <Comics searchTerm={globalSearchTerm} />
+        <Comics
+          currentAction={currentAction}
+          searchTerm={globalSearchTerm}
+          selectedItems={selectedItems}
+        />
       </QueryClientProvider>
     </>
   );
