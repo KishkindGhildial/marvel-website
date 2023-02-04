@@ -4,11 +4,15 @@
   --black: #000;
   --selected-backdrop: rgba(236, 29, 36, 0.5);
   --background: #1c1c1c;
+  --grey: #d9d9d9;
+  --light-grey: #fcfcfc;
 }
 
 body {
   display: flex;
   justify-content: center;
+  padding-top: 80px;
+  color: var(--black);
 }
 
 .header {
@@ -16,6 +20,9 @@ body {
   width: 100vw;
   display: flex;
   justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .width-wrapper {
@@ -64,7 +71,13 @@ body {
 .carousel {
   display: flex;
   justify-content: center;
-  padding: 30px 0;
+  padding: 10px 0;
+  border-bottom: 5px solid var(--grey);
+  position: fixed;
+  left: 0;
+  top: 72px;
+  width: 100vw;
+  background-color: var(--white);
 }
 
 .carousel-width-wrapper {
@@ -125,18 +138,18 @@ body {
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 80px;
+  margin-top: 200px;
 }
 
 .comic-book {
   margin: 10px 10px;
-  width: 150px;
-  height: 200px;
-  background-color: tomato;
+  border: 3px solid var(--black);
 }
 
 .pagination-ctrls {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100vw;
   display: flex;
   justify-content: center;

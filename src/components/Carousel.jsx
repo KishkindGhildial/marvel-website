@@ -8,8 +8,6 @@ import loader from '../assets/loader.gif';
 
 import { getMarvelData } from '../utils';
 
-import charSeed from '../seeds/characters';
-
 const Carousel = ({ selectedItems, handleItemClick }) => {
   const carouselSliderRef = useRef(null);
 
@@ -18,12 +16,12 @@ const Carousel = ({ selectedItems, handleItemClick }) => {
     const carouselOffsetX = carouselElem.scrollLeft;
     if (ctrlType === 'prv')
       carouselElem.scroll({
-        left: carouselOffsetX - 164,
+        left: carouselOffsetX - 820,
         behavior: 'smooth',
       });
     else
       carouselElem.scroll({
-        left: carouselOffsetX + 164,
+        left: carouselOffsetX + 820,
         behavior: 'smooth',
       });
   };
