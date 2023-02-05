@@ -39,7 +39,6 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
       isStateChanged = true;
     }
 
-    console.log(totalPages);
     if (totalPages >= 3) {
       for (let i = currentPageCount - 2; i <= currentPageCount; i++) {
         renderPageSet.push(i);
@@ -49,8 +48,6 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
         renderPageSet.push(i);
       }
     }
-    console.log(totalPages);
-    console.log(renderPageSet);
 
     return (
       <>
