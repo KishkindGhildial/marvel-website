@@ -19,12 +19,12 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
   };
 
   const RenderPageSet = data => {
-    if (!data) return null;
+    if (!data || data.total < 20) return null;
     let isStateChanged = false;
 
     let currentPageCount;
     const renderPageSet = [];
-    let totalPages = data.total / data.count;
+    let totalPages = data.total / 20;
     if (Math.floor(totalPages) !== totalPages)
       totalPages = Math.floor(totalPages) + 1;
 
@@ -39,28 +39,55 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
       isStateChanged = true;
     }
 
-    for (let i = currentPageCount - 2; i <= currentPageCount; i++) {
-      renderPageSet.push(i);
+    console.log(totalPages);
+    if (totalPages >= 3) {
+      for (let i = currentPageCount - 2; i <= currentPageCount; i++) {
+        renderPageSet.push(i);
+      }
+    } else {
+      for (let i = 1; i <= currentPageCount; i++) {
+        renderPageSet.push(i);
+      }
     }
-
-    if (isStateChanged) setPaginationState(newState);
+    console.log(totalPages);
+    console.log(renderPageSet);
 
     return (
-      <ul className="pagination">
-        {renderPageSet.map((num, index) => (
-          <li
-            keu={index + 1}
-            className={
-              paginationState.currentPage === num
-                ? 'pageNum selected'
-                : 'pageNum'
-            }
-            onClick={() => setNewPage(num)}
-          >
-            {num}
-          </li>
-        ))}
-      </ul>
+      <>
+        {totalPages > 3 ? (
+          <img
+            src={prev}
+            alt="Prev"
+            className="pagination-endpoint-ctrl"
+            onClick={() => handleEndCtrlClick('prv')}
+          />
+        ) : null}
+
+        <ul className="pagination">
+          {renderPageSet.map((num, index) => (
+            <li
+              key={index + 1}
+              className={
+                paginationState.currentPage === num
+                  ? 'pageNum selected'
+                  : 'pageNum'
+              }
+              onClick={() => setNewPage(num)}
+            >
+              {num}
+            </li>
+          ))}
+        </ul>
+        {totalPages > 3 ? <span className="page-enddots">...</span> : null}
+        {totalPages > 3 ? (
+          <img
+            src={next}
+            alt="Next"
+            className="pagination-endpoint-ctrl"
+            onClick={() => handleEndCtrlClick('nxt')}
+          />
+        ) : null}
+      </>
     );
   };
 
@@ -68,7 +95,9 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
     const newState = { ...paginationState };
 
     if (ctrlType === 'prv') {
-      newState.visiblePageset -= 1;
+      if (newState.visiblePageset !== 1) {
+        newState.visiblePageset -= 1;
+      }
     } else {
       newState.visiblePageset += 1;
     }
@@ -119,7 +148,7 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
     data: data1,
     fetchStatus: fetchStatus1,
   } = useQuery({
-    queryKey: ['comics', selectedItems],
+    queryKey: ['comics', selectedItems, paginationState.currentPage],
     refetchOnWindowFocus: false,
     keepPreviousData: true,
     queryFn: async () => {
@@ -165,15 +194,20 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
           </h2>
           <div className="comic-books-table">
             {!isLoading1 && fetchStatus1 !== 'fetching' ? (
-              data1.results.map((comic, index) => {
-                const { path, extension } = comic.thumbnail;
-                const imgURL = `${path}.${extension}`;
-                return (
-                  <div key={index + 1} className="comic-book">
-                    <img src={imgURL} alt="Comic Thumbnail" width={200} />
-                  </div>
-                );
-              })
+              !data1.results.length ? (
+                <h3 className="content-heading">No comics found</h3>
+              ) : (
+                data1.results.map((comic, index) => {
+                  const { path, extension } = comic.thumbnail;
+                  const imgURL = `${path}.${extension}`;
+                  return (
+                    <div key={index + 1} className="comic-book">
+                      <img src={imgURL} alt="Comic Thumbnail" width={200} />
+                      <h5 className="comics-name">{comic.title}</h5>
+                    </div>
+                  );
+                })
+              )
             ) : (
               <div className="comics-loader">
                 <img src={loader} alt="Loader" width={400} />
@@ -181,22 +215,7 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
             )}
           </div>
         </div>
-        <div className="pagination-ctrls">
-          <img
-            src={prev}
-            alt="Prev"
-            className="pagination-endpoint-ctrl"
-            onClick={() => handleEndCtrlClick('prv')}
-          />
-          {RenderPageSet(data)}
-          <span className="page-enddots">...</span>
-          <img
-            src={next}
-            alt="Next"
-            className="pagination-endpoint-ctrl"
-            onClick={() => handleEndCtrlClick('nxt')}
-          />
-        </div>
+        <div className="pagination-ctrls">{RenderPageSet(data1)}</div>
       </>
     );
 
@@ -210,15 +229,20 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
         )}
         <div className="comic-books-table">
           {!isLoading && fetchStatus !== 'fetching' ? (
-            data.results.map((comic, index) => {
-              const { path, extension } = comic.thumbnail;
-              const imgURL = `${path}.${extension}`;
-              return (
-                <div key={index + 1} className="comic-book">
-                  <img src={imgURL} alt="Comic Thumbnail" width={200} />
-                </div>
-              );
-            })
+            !data.results.length ? (
+              <h3 className="content-heading">No comics found</h3>
+            ) : (
+              data.results.map((comic, index) => {
+                const { path, extension } = comic.thumbnail;
+                const imgURL = `${path}.${extension}`;
+                return (
+                  <div key={index + 1} className="comic-book">
+                    <img src={imgURL} alt="Comic Thumbnail" width={200} />
+                    <h5 className="comics-name">{comic.title}</h5>
+                  </div>
+                );
+              })
+            )
           ) : (
             <div className="comics-loader">
               <img src={loader} alt="Loader" width={400} />
@@ -226,22 +250,7 @@ const Comics = ({ currentAction, searchTerm, selectedItems }) => {
           )}
         </div>
       </div>
-      <div className="pagination-ctrls">
-        <img
-          src={prev}
-          alt="Prev"
-          className="pagination-endpoint-ctrl"
-          onClick={() => handleEndCtrlClick('prv')}
-        />
-        {RenderPageSet(data)}
-        <span className="page-enddots">...</span>
-        <img
-          src={next}
-          alt="Next"
-          className="pagination-endpoint-ctrl"
-          onClick={() => handleEndCtrlClick('nxt')}
-        />
-      </div>
+      <div className="pagination-ctrls">{RenderPageSet(data)}</div>
     </>
   );
 };

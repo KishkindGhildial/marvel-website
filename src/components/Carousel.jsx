@@ -107,8 +107,10 @@ const Carousel = ({ selectedItems, handleItemClick }) => {
           </button>
         </div>
       ) : (
-        <div className="loader">
-          <img src={loader} alt="Loader" width={200} />
+        <div className="carousel">
+          <div className="loader">
+            <img src={loader} alt="Loader" width={200} />
+          </div>
         </div>
       )}
     </>

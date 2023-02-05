@@ -2,7 +2,8 @@
   --red: #ec1d24;
   --white: #fff;
   --black: #000;
-  --selected-backdrop: rgba(236, 29, 36, 0.5);
+  /* --selected-backdrop: rgba(236, 29, 36, 0.5); */
+  --selected-backdrop: rgba(39, 103, 46, 0.307);
   --background: #1c1c1c;
   --grey: #d9d9d9;
   --light-grey: #fcfcfc;
@@ -49,7 +50,7 @@ body {
   font-size: 14px;
   line-height: 22px;
   color: var(--black);
-  padding: 8px 10px 8px 25px;
+  padding: 8px 10px 8px 35px;
   outline: none;
   min-width: 250px;
 }
@@ -62,6 +63,7 @@ body {
   position: absolute;
   left: 5px;
   top: 12px;
+  padding: 0 5px;
 }
 
 .searchButton {
@@ -97,14 +99,28 @@ body {
   left: 0;
   top: 72px;
   width: 100vw;
-  background-color: var(--white);
+  background-color: var(--background);
 }
 
 .reset-btn {
   position: absolute;
-  right: 20px;
+  right: 55px;
   bottom: 20px;
+  padding: 5px 10px;
   cursor: pointer;
+  background-color: var(--red);
+  border: 2px solid var(--red);
+  color: var(--white);
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: 0.1s ease-in-out;
+}
+
+.reset-btn:hover {
+  background-color: var(--white);
+  color: var(--red);
+  border: 2px solid var(--white);
 }
 
 .carousel-width-wrapper {
@@ -165,6 +181,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 80px;
+  justify-content: center;
 }
 
 .content-heading {
@@ -173,7 +190,18 @@ body {
 
 .comic-book {
   margin: 10px 10px;
+  width: 200px;
   border: 3px solid var(--black);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: space-between;
+  background-color: var(--background);
+}
+
+.comic-book img {
+  width: 200px;
+  height: 300px;
 }
 
 .pagination-ctrls {
@@ -181,11 +209,12 @@ body {
   bottom: 0;
   left: 0;
   width: 100vw;
+  height: 20px;
   display: flex;
   justify-content: center;
-  padding: 20px 0 30px;
+  padding: 15px 0 20px;
   border-top: 5px solid var(--red);
-  background-color: var(--white);
+  background-color: var(--background);
 }
 
 .pagination {
@@ -196,8 +225,9 @@ body {
 }
 
 .pageNum {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,6 +246,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 600;
+  padding-left: 5px;
+  color: var(--white);
 }
 
 .pagination-endpoint-ctrl {
@@ -228,4 +261,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.comics-name {
+  margin: 10px 0;
+  align-self: flex-end;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 180px;
+  color: var(--white);
 }
